@@ -2,6 +2,7 @@ package com.de.microservices.currencyexchangeservice.web.controller;
 
 import com.de.microservices.currencyexchangeservice.domain.ExchangeValue;
 import com.de.microservices.currencyexchangeservice.repository.ExchangeValueRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 
+@Slf4j
 @RestController
 public class CurrencyExchangeController {
     @Autowired
@@ -20,6 +22,7 @@ public class CurrencyExchangeController {
     @GetMapping("/currency-exchange/from/{from}/to/{to}")
     public ExchangeValue retrieveExchangeValue(@PathVariable String from, @PathVariable String to) {
         ExchangeValue exchangeValue = exchangeValueRepository.findByFromAndTo(from, to);
+        log.info("ExchangeValue: {}", exchangeValue);
         exchangeValue.setPort(Integer.parseInt(environment.getProperty("server.port")));
         return exchangeValue;
     }
